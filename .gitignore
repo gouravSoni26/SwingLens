@@ -1,0 +1,8 @@
+.env
+*.pyc
+__pycache__/
+.streamlit/secrets.toml
+trading-app/
+*.log
+context-handoff.md
+graphify-out/

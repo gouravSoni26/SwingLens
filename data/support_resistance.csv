@@ -1,0 +1,371 @@
+ticker,kind,level_low,level_high,timeframe,note
+360ONE.NS,support,686.1,916.7,daily,support going up
+360ONE.NS,resistance,1198.5,1315.2,daily,"Resistace goung up, with stocks"
+3MINDIA.NS,resistance,30780.45,40127.2,Monthly,Channel- Stock going between support and Resistance
+3MINDIA.NS,support,16705,28471.45,monthly,Channel- Stock going between support and Resistance
+AADHARHFC.NS,resistance,508.9,526.45,Daily,"Resistace goung up, with stocks"
+AADHARHFC.NS,support,428.5,483.45,Daily,"Support is also going up, with stocks"
+AARTIIND.NS,support,464.9,353.65,Monthly,support going down
+AARTIIND.NS,resistance,764.35,353.65,Daily,3x bounce on daily
+ABB.NS,resistance,9256.5,7825.75,Weekly,Resistance going downwards
+ABBOTINDIA.NS,resistance,18502.3,35933.55,Monthly,"Resistance going up, but stock is in red"
+ABCAPITAL.NS,resistance,159.95,368.1,Monthly,"Resistance going up, with stocks"
+ACC.NS,support,361.8,1251.95,Monthly,"Support going up, latest close at red"
+ACE.NS,support,736.7,1185.55,weekly,support going up
+ACE.NS,support,736.7,1185.55,daily,Bollinger band -upward movement
+ACMESOLAR.NS,resistance,234.89,363.6,weekly,"Resistace goung up, with stocks"
+ACUTAAS.NS,resistance,2063.95,3420.55,daily,"Resistace goung up, with stocks"
+ADANIENSOL.NS,support,620.45,642.7,Monthly,Horizontal Support
+ADANIENT.NS,resistance,4031.35,3061.55,Monthly,Resistance going downwards
+ADANIGREEN.NS,resistance,2149.8,1527.5,weekly,Resistance going downwards
+ADANIGREEN.NS,support,824.15,767.55,weekly,support just a bit horizontal
+ADANIPORTS.NS,support,570.35,1898.95,Monthly,"support going up, with the stocks"
+AEGISLOG.NS,support,274.25,590.35,monthly,"support going up, with the stocks"
+AEGISVOPAK.NS,resistance,238.61,245.9,daily,Last candel code is at 238.35
+AFCONS.NS,resistance,347,363.5,daily,"It's small resiatance setup, but let's see"
+AFCONS.NS,support,264.5,422.6,daily,"Support at this level, but not so sure if it handles or not"
+AFFLE.NS,resistance,1701.15,2188.35,Daily,It's a Resiatance Zone
+AIAENG.NS,support,1487.5,3233.85,Daily,3x bounce on daily
+AJANTPHARM.NS,resistance,3006.25,3303.45,daily,Price bounce off from here 2 times
+ALKEM.NS,Support,4412.4,5199.5,daily,Price bounce of 5 times in support
+ALKEM.NS,resistance,5761.75,6450.5,Daily,price bounce of 4 times in resitance
+AMBER.NS,support,8139.95,8913.5,daily,Price bounce of 3 times in support
+AMBER.NS,resistance,6112.85,7153.1,daily,price bounce of 4 times in resitance
+AMBUJACEM.NS,support,135.4,404.8,daily,3x bounce on daily
+ANANTRAJ.NS,resistance,596.5,910.5,weekly,3x bounce on weekly chart
+ANTHEM.NS,resistance,816.95,870.15,daily,"Fresh in NSE, 3x bounce on daily"
+APOLLOTYRE.NS,resistance,531.9,582.8,daily,5x bounce back
+RELLIANCE.NS,support,1254.9,1328.25,daily,3x bounce on daily
+TCS.NS,support,2074.4,2349.7,daily,3x bounce on daily
+INFY.NS,support,1088.8,1271.85,daily,3x bounce on daily
+RELIANCE.NS,support,1300,1325,daily,BB lower area + consolidation base; multiple daily touches Oct24-Jun26
+RELIANCE.NS,support,1270,1300,weekly,2024 consolidation zone before breakout; price returning to base
+RELIANCE.NS,resistance,1450,1465,Weekly,Failed breakout Nov-Dec 2025; dashed line visible at 1453
+TCS.NS,support,2050,2130,daily,Structural floor from 2023 lows; current consolidation base; BB lower at 2061
+TCS.NS,support,2050,2100,Weekly,Multi-year horizontal support visible on weekly going back to 2021-22
+TCS.NS,resistance,2800,2900,Weekly,Lower bound of descending weekly channel; first ceiling on any recovery
+INFY.NS,support,1040,1065,daily,BB lower band area; descending channel floor; structural base
+INFY.NS,support,1050,1080,Weekly,2023 consolidation base before 2024 rally; strong weekly floor
+INFY.NS,resistance,1950,2050,daily,Major ceiling; multiple rejections 2022-2024 visible on both daily and weekly
+HDFCBANK.NS,support,724,730,daily,swing low cluster Jun 2026 / lower BB
+HDFCBANK.NS,resistance,960,980,daily,swing high mid 2024 multiple rejections
+HDFCBANK.NS,resistance,880,900,daily,intermediate resistance 2023-2025 multiple touches
+HDFCBANK.NS,support,760,780,Weekly,current consolidation zone multiple weekly touches
+HDFCBANK.NS,support,600,620,Weekly,major swing low COVID 2020 lows
+HDFCBANK.NS,resistance,1000,1020,Weekly,prior ATH zone 2024 peak
+HDFCBANK.NS,support,550,580,Monthly,long-term base 2018-2019 major support
+HDFCBANK.NS,resistance,1050,1080,Monthly,ATH resistance 2024-2025 highs
+ICICIBANK.NS,support,1200,1220,daily,swing low Jun 2026 bounce zone
+ICICIBANK.NS,support,1280,1300,daily,intermediate support mid 2025 consolidation base
+ICICIBANK.NS,resistance,1450,1480,daily,swing high 2024-2025 multiple daily rejections
+ICICIBANK.NS,support,850,880,Weekly,major swing low COVID 2020 historical support
+ICICIBANK.NS,resistance,1400,1420,Weekly,recent swing high weekly rejection zone
+ICICIBANK.NS,support,780,820,Monthly,long-term base 2019-2020 major support
+ICICIBANK.NS,resistance,1480,1500,Monthly,ATH resistance 2024-2025 monthly highs
+KOTAKBANK.NS,support,370,380,daily,swing low cluster mid-2024 and Jun 2026 lows
+KOTAKBANK.NS,support,310,325,daily,deep swing low Jul 2024 strong bounce
+KOTAKBANK.NS,resistance,440,460,daily,swing highs 2024-2025 multiple rejections
+KOTAKBANK.NS,support,300,320,Weekly,major swing low COVID 2020 historical floor
+KOTAKBANK.NS,resistance,430,445,Weekly,2021-2026 range highs repeatedly rejected
+KOTAKBANK.NS,support,340,360,Monthly,2022-2023 base mutiple monthly touches
+KOTAKBANK.NS,resistance,450,460,Monthly,ATH zone 2024-2025 monthly highs
+AXISBANK.NS,support,1050,1080,daily,multiple dauly lows 2024-2025 string bounce zone
+AXISBANK.NS,support,1230,1250,daily,recent Jun 2026 swing lows lower BB
+AXISBANK.NS,resistance,1390,1410,daily,current swing high upper BB multiple rejections
+AXISBANK.NS,support,390,4120,Weekly,major swing low COVID 2020 lows
+AXISBANK.NS,support,800,840,Weekly,2022 consolidation base weekly bounce zone
+AXISBANK.NS,resistance,1400,1430,weekly,current ATH zone weekly rejection
+AXISBANK.NS,support,350,400,monthly,COVID 2020 low monthly floor
+AXISBANK.NS,support,950,1000,monthly,2022 base multiple monthly touches
+AXISBANK.NS,resistance,1420,1425,monthly,ATH resistance 2025 monthly highs
+SBIN.NS,support,943,960,daily,Jun 2026 swing lows lower BB strong bounce
+SBIN.NS,support,780,800,daily,2025 consolidation base multiple daily touches
+SBIN.NS,resistance,1050,1080,daily,2024-2025 swing highs multiple rejections
+SBIN.NS,resistance,1280,1320,daily,ATH Jan 2026 peak
+SBIN.NS,support,700,730,weekly,2023 base weekly bounce zone
+SBIN.NS,resistance,900,920,weekly,2025 weekly consolidation ceiling
+SBIN.NS,support,600,640,monthly,2022-2023 base monthly lower BB
+SBIN.NS,resistance,1150,1160,monthly,ATH 2026 monthly highs
+BAJFINANCE.NS,support,840,860,daily,Jun 2026 swing lows lower BB
+BAJFINANCE.NS,support,880,900,daily,multiple daily touches mid 2026 bounce zone
+BAJFINANCE.NS,resistance,980,1000,daily,current upper BB 2025 swing high cluster
+BAJFINANCE.NS,resistance,1050,1080,daily,prior ATH 2024 daily highs
+BAJFINANCE.NS,support,600,640,weekly,2022-2023 weekly base major bounce zone
+BAJFINANCE.NS,resistance,1000,1040,weekly,2024-2025 weekly highs repeated rejection
+BAJFINANCE.NS,support,580,620,monthly,2022 monthly base lower BB
+BAJFINANCE.NS,support,800,840,monthly,2023-2024 monthly consolidation zone
+BAJFINANCE.NS,resistance,1100,1105,monthly,ATH 2024 monthly highs
+HCLTECH.NS,support,1085,1100,daily,Jun 2026 swing lows lower BB current bounce
+HCLTECH.NS,resistance,1217,1250,daily,multiple daily rejections 2026 upper BB
+HCLTECH.NS,resistance,1800,1850,daily,prior swing high 2025 daily peak
+HCLTECH.NS,support,800,840,weekly,2022-2023 weekly base strong bounce zone
+HCLTECH.NS,support,1027,1050,weekly,current lower BB weekly recent lows
+HCLTECH.NS,resistance,1900,1950,weekly,2024-2025 weekly ATH zone
+HCLTECH.NS,support,400,440,monthly,COVID 2020 low long-term monthly floor
+HCLTECH.NS,support,1100,1150,monthly,current monthly lower BB support
+HCLTECH.NS,resistance,1950,2000,monthly,ATH 2024-2025 monthly highs
+WIPRO.NS,support,164,170,daily,Jun 2026 swing lows lower BB
+WIPRO.NS,resistance,212,215,daily,2025 swing high upper BB multiple rejections
+WIPRO.NS,resistance,295,310,daily,2024-2025 daily highs resistance zone
+WIPRO.NS,support,155,165,weekly,2019-2020 weekly lows deep historical support
+WIPRO.NS,support,195,200,weekly,2023 weekly base strong bounce zone
+WIPRO.NS,resistance,290,300,weekly,2022 weekly highs 2024 peak rejection
+WIPRO.NS,support,170,180,monthly,current monthly lower BB multi-year base
+WIPRO.NS,support,85,100,monthly,2019-2020 monthly floor deep historical low
+WIPRO.NS,resistance,315,320,monthly,2021-2022 monthly ATH zone
+TECHM.NS,support,1390,1420,daily,Jun 2026 swing lows lower BB current bounce
+TECHM.NS,resistance,1546,1580,daily,upper BB multiple daily rejections 2026
+TECHM.NS,resistance,1800,1850,daily,prior swing high 2025 daily peak
+TECHM.NS,support,1312,1340,weekly,current lower BB weekly 2025 base
+TECHM.NS,support,500,540,weekly,COVID 2020 crash floor major support
+TECHM.NS,resistance,1800,1900,weekly,2022 weekly ATH 2025 peak rejection zone
+TECHM.NS,support,580,620,monthly,2022-2023 monthly base strong bounce
+TECHM.NS,support,1294,1320,monthly,current monthly lower BB
+TECHM.NS,resistance,1760,1800,monthly,ATH 2025 monthly highs
+MARUTI.NS,support,12760,13000,daily,Jun 2026 swing lows lower BB
+MARUTI.NS,resistance,13770,13900,daily,intermediate upper BB rejection zone
+MARUTI.NS,resistance,15000,15200,daily,2025 swing high cluster
+MARUTI.NS,support,11894,12000,weekly,current lower BB 2022 base zone
+MARUTI.NS,support,7800,8200,weekly,COVID 2020 lows major weekly support
+MARUTI.NS,resistance,15000,15014,weekly,2024-2025 weekly ATH
+MARUTI.NS,support,9913,10200,monthly,monthly lower BB 2022-2023 base
+MARUTI.NS,resistance,16921,17000,monthly,2024 monthly ATH resistance
+TATAMOTORS.NS,support,349,360,daily,Jun 2026 swing lows lower BB
+TATAMOTORS.NS,resistance,421,430,daily,upper BB multiple daily rejections Mar 2026
+TATAMOTORS.NS,support,348,360,weekly,current weekly lower BB support
+TATAMOTORS.NS,resistance,497,510,weekly,2025 weekly peak upper BB rejection
+BAJAJ-AUTO.NS,support,9741,9800,daily,Jun 2026 swing lows lower BB
+BAJAJ-AUTO.NS,resistance,10624,10700,daily,upper BB 2026 swing high rejection
+BAJAJ-AUTO.NS,resistance,12800,13000,daily,2024 daily ATH peak
+BAJAJ-AUTO.NS,support,8723,8800,weekly,current lower BB weekly support
+BAJAJ-AUTO.NS,support,3800,4000,weekly,COVID 2020 lows major historical floor
+BAJAJ-AUTO.NS,resistance,10918,11000,weekly,2024-2025 weekly highs
+BAJAJ-AUTO.NS,support,7496,7600,monthly,monthly lower BB support
+BAJAJ-AUTO.NS,support,2000,2200,monthly,COVID 2020 monthly floor
+BAJAJ-AUTO.NS,resistance,13000,13200,monthly,2024 monthly ATH
+EICHERMOT.NS,support,6906,7000,daily,Jun 2026 swing lows lower BB
+EICHERMOT.NS,resistance,7774,7800,daily,upper BB recent swing high
+EICHERMOT.NS,resistance,8000,8085,daily,ATH zone 2026
+EICHERMOT.NS,support,6476,6600,weekly,current lower BB weekly support
+EICHERMOT.NS,support,1500,1600,weekly,COVID 2020 lows major long-term floor
+EICHERMOT.NS,resistance,8085,8200,weekly,2026 weekly ATH
+EICHERMOT.NS,support,4218,4400,monthly,monthly lower BB 2022-2023 base
+EICHERMOT.NS,support,1800,2000,monthly,2019-2020 monthly floor
+EICHERMOT.NS,resistance,8286,8500,monthly,current ATH monthly highs
+TITAN.NS,resistance,4500,4550,daily,Jan 2026 highs tested again Jun 2026 ATH zone
+TITAN.NS,support,3950,4000,daily,Mar-Apr 2026 swing low multiple touches
+TITAN.NS,support,3200,3250,daily,Aug 2024 swing low
+TITAN.NS,resistance,4500,4600,weekly,2025-2026 ATH zone multi-week highs
+TITAN.NS,support,3800,3850,weekly,2022 ATH flipped to support post-breakout
+TITAN.NS,support,3200,3300,weekly,2023 consolidation base
+TITAN.NS,support,2400,2500,weekly,2022 crash low major weekly demand
+TITAN.NS,resistance,4500,4600,monthly,current ATH zone
+TITAN.NS,support,3000,3200,monthly,2023 breakout base now monthly support
+HINDUNILVR.NS,resistance,2900,2950,daily,Aug 2024 daily swing peak
+HINDUNILVR.NS,resistance,2600,2650,daily,Jan 2026 bounce high
+HINDUNILVR.NS,support,2050,2100,daily,Mar-Apr 2026 lows multiple wick touches
+HINDUNILVR.NS,support,1950,2000,daily,lower wick extreme round number
+HINDUNILVR.NS,resistance,2800,2850,weekly,2022 ATH cluster
+HINDUNILVR.NS,resistance,2600,2650,weekly,2021 highs multiple weekly peaks
+HINDUNILVR.NS,support,2000,2050,weekly,2024-2026 weekly demand base
+HINDUNILVR.NS,support,1600,1700,weekly,2020 COVID crash area
+HINDUNILVR.NS,resistance,2800,2900,monthly,2022 ATH zone
+HINDUNILVR.NS,support,2000,2100,monthly,current multi-year floor
+HINDUNILVR.NS,support,1500,1600,monthly,pre-2021 consolidation
+NESTLEIND.NS,resistance,1500,1520,daily,Nov 2024 and Jan 2025 swing highs
+NESTLEIND.NS,resistance,1420,1440,daily,Jun 2026 recent swing high
+NESTLEIND.NS,support,1350,1370,daily,multiple daily lows Jun 2026 current base
+NESTLEIND.NS,support,1100,1150,daily,Aug-Sep 2025 swing lows
+NESTLEIND.NS,resistance,1500,1525,weekly,2024-2025 ATH cluster
+NESTLEIND.NS,support,1100,1150,weekly,2025 weekly demand zone
+NESTLEIND.NS,support,800,850,weekly,2020 COVID low area
+NESTLEIND.NS,resistance,1500,1550,monthly,ATH cluster 2024
+NESTLEIND.NS,support,1000,1050,monthly,2022-2023 breakout base
+NESTLEIND.NS,support,800,900,monthly,2020-2021 consolidation
+ASIANPAINT.NS,resistance,3250,3300,daily,Aug-Sep 2024 swing high before large decline
+ASIANPAINT.NS,resistance,2750,2800,daily,Jan 2026 bounce high multiple daily peaks
+ASIANPAINT.NS,support,2600,2650,daily,Mar-Apr 2026 base current price area
+ASIANPAINT.NS,support,2150,2200,daily,Nov 2025 swing low strong wick zone
+ASIANPAINT.NS,resistance,3500,3600,weekly,2021-2022 ATH cluster multiple weekly peaks
+ASIANPAINT.NS,resistance,2800,2900,weekly,2023 recovery highs now resistance
+ASIANPAINT.NS,support,2400,2500,weekly,2024-2026 weekly demand multiple wicks
+ASIANPAINT.NS,support,2000,2100,weekly,2025 weekly lows BB lower band
+ASIANPAINT.NS,resistance,3400,3600,monthly,2021-2022 ATH zone
+ASIANPAINT.NS,support,2400,2500,monthly,current multi-month base
+ASIANPAINT.NS,support,1600,1800,monthly,pre-2021 breakout zone 2019-2020 area
+BRITANNIA.NS,resistance,6400,6500,daily,Aug-Sep 2024 sharp swing high
+BRITANNIA.NS,resistance,5900,6000,daily,Nov 2025 bounce high
+BRITANNIA.NS,support,5000,5050,daily,May-Jun 2026 lows multiple touches current base
+BRITANNIA.NS,support,4750,4800,daily,Nov 2024 swing low post large drop
+BRITANNIA.NS,resistance,6200,6400,weekly,2024 ATH cluster multiple weekly peaks
+BRITANNIA.NS,resistance,5500,5600,weekly,2022-2023 consolidation zone multiple weekly highs
+BRITANNIA.NS,support,4900,5000,weekly,current weekly demand base 2025-2026 lows
+BRITANNIA.NS,support,3500,3600,weekly,2020 COVID crash low and 2019 base
+BRITANNIA.NS,resistance,6000,6400,monthly,2024 ATH zone
+BRITANNIA.NS,support,4600,4800,monthly,2022-2023 consolidation base
+BRITANNIA.NS,support,3000,3200,monthly,2019-2020 base pre-bull run
+SUNPHARMA.NS,resistance,1950,1960,daily,May 2025 ATH zone multiple daily peaks
+SUNPHARMA.NS,resistance,1870,1900,daily,Jan-Feb 2026 swing highs current price area
+SUNPHARMA.NS,support,1750,1770,daily,Apr-May 2026 swing lows multiple daily touches
+SUNPHARMA.NS,support,1600,1650,daily,Aug-Sep 2025 extended pullback lows
+SUNPHARMA.NS,resistance,1900,1920,weekly,2024-2025 ATH cluster weekly upper band
+SUNPHARMA.NS,support,1600,1650,weekly,2024 weekly demand post-breakout base
+SUNPHARMA.NS,support,1200,1250,weekly,2023 weekly consolidation base
+SUNPHARMA.NS,support,800,850,weekly,2020 COVID crash low area
+SUNPHARMA.NS,resistance,1900,1950,monthly,current ATH zone
+SUNPHARMA.NS,support,1400,1500,monthly,2022-2023 breakout base
+SUNPHARMA.NS,support,800,1000,monthly,pre-2023 multi-year consolidation
+DRREDDY.NS,resistance,1390,1410,daily,Aug 2024 peak and Nov 2025 bounce high
+DRREDDY.NS,resistance,1340,1360,daily,current price area multiple daily swing highs
+DRREDDY.NS,support,1240,1260,daily,Mar-Apr 2026 swing lows repeated wick zone
+DRREDDY.NS,support,1080,1100,daily,May 2025 spike low major daily demand
+DRREDDY.NS,resistance,1380,1420,weekly,2024-2025 weekly ATH cluster
+DRREDDY.NS,support,1200,1250,weekly,2024-2026 weekly demand multiple wicks
+DRREDDY.NS,support,800,900,weekly,2022 weekly lows major structural support
+DRREDDY.NS,support,500,600,weekly,pre-2021 base historical weekly demand
+DRREDDY.NS,resistance,1380,1420,monthly,ATH cluster 2024-2025
+DRREDDY.NS,support,1000,1100,monthly,2021-2022 breakout base
+DRREDDY.NS,support,600,700,monthly,2019-2020 consolidation area
+CIPLA.NS,resistance,1690,1720,daily,Aug-Sep 2024 swing high peak
+CIPLA.NS,resistance,1490,1510,daily,Nov 2025 bounce high multiple daily peaks
+CIPLA.NS,support,1380,1410,daily,Mar-May 2026 base multiple touches current price area
+CIPLA.NS,support,1200,1250,daily,Feb 2026 swing low sharp wick zone
+CIPLA.NS,resistance,1680,1720,weekly,2024 ATH cluster weekly highs
+CIPLA.NS,resistance,1450,1480,weekly,2023-2024 weekly peaks overhead resistance
+CIPLA.NS,support,1150,1200,weekly,2025 weekly demand zone BB lower band area
+CIPLA.NS,support,800,850,weekly,2022 weekly lows major structural demand
+CIPLA.NS,resistance,1650,1700,monthly,2024 ATH zone
+CIPLA.NS,support,1200,1300,monthly,2022-2023 breakout base
+CIPLA.NS,support,600,700,monthly,2019-2020 pre-bull consolidation
+LT.NS,resistance,4400,4450,daily,Nov 2024 and May 2026 swing highs
+LT.NS,resistance,4250,4300,daily,Jan-Feb 2026 multiple daily peaks overhead
+LT.NS,support,3800,3850,daily,Mar 2026 swing low sharp wick zone
+LT.NS,support,3200,3300,daily,Nov 2025 spike low major daily demand
+LT.NS,resistance,4400,4500,weekly,2024-2026 ATH cluster weekly highs
+LT.NS,support,3400,3500,weekly,2024 weekly demand post-breakout floor
+LT.NS,support,2000,2200,weekly,2022-2023 weekly consolidation
+LT.NS,support,1200,1400,weekly,2020 COVID crash low area
+LT.NS,resistance,4300,4400,monthly,current ATH zone
+LT.NS,support,3200,3400,monthly,2023-2024 breakout base
+LT.NS,support,1600,1800,monthly,2020 COVID crash base major monthly demand
+NTPC.NS,resistance,430,440,daily,Jul-Aug 2024 ATH cluster multiple daily peaks
+NTPC.NS,resistance,395,405,daily,Nov 2025 bounce high and Jan 2026 swing high
+NTPC.NS,support,335,345,daily,Apr-May 2026 lows multiple daily touches
+NTPC.NS,support,300,310,daily,Nov 2025 spike low major daily demand
+NTPC.NS,resistance,430,445,weekly,2024 ATH cluster weekly highs
+NTPC.NS,support,320,340,weekly,current weekly demand 2025-2026 base
+NTPC.NS,support,160,180,weekly,2022-2023 weekly consolidation zone
+NTPC.NS,support,80,100,weekly,pre-2023 multi-year base
+NTPC.NS,resistance,440,480,monthly,2024 ATH zone
+NTPC.NS,support,300,320,monthly,2023 breakout base key monthly floor
+NTPC.NS,support,100,120,monthly,pre-2022 long-term base
+POWERGRID.NS,resistance,355,365,daily,Jun-Jul 2024 ATH cluster multiple daily peaks
+POWERGRID.NS,resistance,320,330,daily,Nov 2025 bounce high
+POWERGRID.NS,support,280,290,daily,May-Jun 2026 lows multiple touches current area
+POWERGRID.NS,support,245,255,daily,Feb 2026 swing low sharp wick zone
+POWERGRID.NS,resistance,355,370,weekly,2024 ATH cluster weekly highs
+POWERGRID.NS,support,275,290,weekly,current weekly demand 2025-2026 base
+POWERGRID.NS,support,175,185,weekly,2022-2023 weekly consolidation
+POWERGRID.NS,support,100,120,weekly,pre-2022 long base historical weekly demand
+POWERGRID.NS,resistance,360,375,monthly,2024 ATH zone
+POWERGRID.NS,support,250,270,monthly,2023 breakout base
+POWERGRID.NS,support,150,175,monthly,pre-2023 multi-year consolidation
+ONGC.NS,resistance,310,320,daily,Jun-Jul 2024 ATH cluster sharp swing highs
+ONGC.NS,resistance,270,280,daily,Jan-Feb 2026 bounce highs multiple daily peaks
+ONGC.NS,support,235,245,daily,May-Jun 2026 lows multiple touches current area
+ONGC.NS,support,200,210,daily,Nov 2025 swing low major daily demand
+ONGC.NS,resistance,310,325,weekly,2024 ATH cluster weekly highs
+ONGC.NS,resistance,270,280,weekly,2023 weekly highs now overhead resistance
+ONGC.NS,support,220,240,weekly,current weekly demand 2025-2026 base
+ONGC.NS,support,120,140,weekly,2022 weekly lows major structural support
+ONGC.NS,resistance,320,360,monthly,2024 ATH zone multi-month highs
+ONGC.NS,support,200,220,monthly,2022-2023 breakout base
+ONGC.NS,support,100,120,monthly,pre-2022 long-term consolidation
+COALINDIA.NS,resistance,540,560,daily,Jun-Jul 2024 ATH cluster sharp peak
+COALINDIA.NS,resistance,480,490,daily,Nov 2025 and Apr 2026 bounce highs
+COALINDIA.NS,support,430,440,daily,May-Jun 2026 lows multiple touches current area
+COALINDIA.NS,support,355,370,daily,Nov 2024 swing low major daily demand
+COALINDIA.NS,resistance,530,545,weekly,2024 ATH cluster weekly highs
+COALINDIA.NS,resistance,480,495,weekly,2025 bounce highs weekly overhead
+COALINDIA.NS,support,400,420,weekly,current weekly demand base 2025-2026 lows
+COALINDIA.NS,support,200,240,weekly,2022-2023 weekly consolidation
+COALINDIA.NS,resistance,530,560,monthly,2024 ATH zone
+COALINDIA.NS,support,360,400,monthly,2023 breakout base
+COALINDIA.NS,support,200,240,monthly,2018-2020 multi-year consolidation base
+ULTRACEMCO.NS,resistance,12800,13000,daily,Aug-Sep 2024 ATH cluster multiple daily peaks
+ULTRACEMCO.NS,resistance,11700,11750,daily,Jan 2026 bounce high overhead resistance
+ULTRACEMCO.NS,support,11200,11300,daily,May-Jun 2026 lows multiple daily touches
+ULTRACEMCO.NS,support,10500,10700,daily,Mar 2026 swing low sharp wick zone
+ULTRACEMCO.NS,resistance,12800,13000,weekly,2024 ATH cluster weekly highs
+ULTRACEMCO.NS,resistance,11600,11800,weekly,2023 weekly highs now overhead
+ULTRACEMCO.NS,support,10200,10400,weekly,current weekly demand 2025-2026 base
+ULTRACEMCO.NS,support,7200,7600,weekly,2022 weekly lows major structural demand
+ULTRACEMCO.NS,resistance,13000,13500,monthly,2024 ATH zone
+ULTRACEMCO.NS,support,10000,10500,monthly,2023 breakout base
+ULTRACEMCO.NS,support,7000,8000,monthly,pre-2024 multi-year base
+ADANIENT.NS,resistance,3300,3400,daily,Jun-Jul 2024 swing highs
+ADANIENT.NS,resistance,3100,3150,daily,Jun 2026 multiple daily peaks current area
+ADANIENT.NS,support,2850,2900,daily,Mar-Apr 2026 base multiple touches
+ADANIENT.NS,support,1850,1950,daily,Nov 2025 swing low major daily demand
+ADANIENT.NS,resistance,4000,4200,weekly,2022 pre-Hindenburg ATH cluster
+ADANIENT.NS,resistance,3200,3400,weekly,2024 weekly recovery highs
+ADANIENT.NS,support,2400,2600,weekly,2024-2025 weekly demand zone
+ADANIENT.NS,support,1500,1600,weekly,post-Hindenburg 2023 weekly lows
+ADANIENT.NS,resistance,4000,4400,monthly,2022 ATH zone
+ADANIENT.NS,support,2200,2400,monthly,2024-2025 monthly base
+ADANIENT.NS,support,800,1000,monthly,pre-2021 long-term base
+ADANIPORTS.NS,resistance,1850,1870,daily,May-Jun 2026 swing highs current area
+ADANIPORTS.NS,resistance,1600,1650,daily,Sep-Oct 2024 highs prior resistance zone
+ADANIPORTS.NS,support,1750,1780,daily,May-Jun 2026 lows multiple daily touches
+ADANIPORTS.NS,support,1300,1350,daily,Nov 2025 swing low major daily demand
+ADANIPORTS.NS,resistance,1900,2000,weekly,2024-2026 ATH zone weekly upper band
+ADANIPORTS.NS,support,1550,1650,weekly,2024 weekly demand post-breakout floor
+ADANIPORTS.NS,support,900,1000,weekly,2022-2023 weekly consolidation
+ADANIPORTS.NS,support,600,700,weekly,2020 COVID crash low
+ADANIPORTS.NS,resistance,1900,2000,monthly,current ATH zone
+ADANIPORTS.NS,support,1300,1400,monthly,2023 breakout base
+ADANIPORTS.NS,support,600,800,monthly,pre-2021 multi-year base
+TATACONSUM.NS,resistance,1250,1270,daily,Apr-May 2026 swing high multiple daily peaks
+TATACONSUM.NS,resistance,1180,1200,daily,Jan-Feb 2026 bounce high
+TATACONSUM.NS,support,1070,1090,daily,May-Jun 2026 lows current base multiple touches
+TATACONSUM.NS,support,950,970,daily,Nov 2025 swing low major daily demand
+TATACONSUM.NS,resistance,1250,1300,weekly,2024 ATH cluster weekly highs
+TATACONSUM.NS,resistance,1150,1200,weekly,2023 weekly recovery highs now overhead
+TATACONSUM.NS,support,1000,1050,weekly,current weekly demand 2025-2026 base
+TATACONSUM.NS,support,700,750,weekly,2022 weekly lows major structural demand
+TATACONSUM.NS,resistance,1250,1300,monthly,2024 ATH zone
+TATACONSUM.NS,support,900,950,monthly,2023 breakout base
+TATACONSUM.NS,support,600,700,monthly,pre-2021 long-term base
+BAJAJFINSV.NS,resistance,2050,2100,daily,Jul-Aug 2024 swing highs sharp peaks
+BAJAJFINSV.NS,resistance,1900,1950,daily,Oct-Nov 2025 bounce highs
+BAJAJFINSV.NS,support,1640,1660,daily,Mar-Apr 2026 swing lows sharp wick zone
+BAJAJFINSV.NS,support,1530,1560,daily,Feb 2026 spike low major daily demand
+BAJAJFINSV.NS,resistance,2000,2050,weekly,2024 ATH cluster weekly highs
+BAJAJFINSV.NS,resistance,1900,1950,weekly,2023 weekly recovery highs
+BAJAJFINSV.NS,support,1550,1600,weekly,current weekly demand 2025-2026 base
+BAJAJFINSV.NS,support,1000,1100,weekly,2022-2023 weekly consolidation
+BAJAJFINSV.NS,resistance,2100,2250,monthly,2024 ATH zone
+BAJAJFINSV.NS,support,1500,1600,monthly,2023 breakout base
+BAJAJFINSV.NS,support,800,1000,monthly,pre-2022 multi-year base
+M&M.NS,resistance,3500,3550,daily,May-Jun 2025 ATH cluster multiple daily peaks
+M&M.NS,resistance,3200,3250,daily,Jan-Feb 2026 bounce highs multiple daily peaks
+M&M.NS,support,2900,2950,daily,Apr-May 2026 swing lows multiple touches
+M&M.NS,support,2600,2650,daily,Nov 2025 spike low major daily demand
+M&M.NS,resistance,3500,3600,weekly,2025 ATH cluster weekly highs
+M&M.NS,support,2800,2900,weekly,current weekly demand 2025-2026 base
+M&M.NS,support,1600,1800,weekly,2022-2023 weekly consolidation
+M&M.NS,support,600,800,weekly,2020 COVID crash and pre-2021 base
+M&M.NS,resistance,3500,3800,monthly,2025 ATH zone
+M&M.NS,support,2800,3000,monthly,2024 breakout base
+M&M.NS,support,1200,1600,monthly,pre-2023 multi-year consolidation
+HEROMOTOCO.NS,resistance,6200,6400,daily,Jun-Jul 2024 ATH peak sharp daily highs
+HEROMOTOCO.NS,resistance,5500,5600,daily,Oct-Nov 2024 bounce highs 2025 consolidation
+HEROMOTOCO.NS,support,4750,4800,daily,May-Jun 2026 lows multiple daily touches
+HEROMOTOCO.NS,support,3500,3600,daily,Nov 2024 spike low major daily demand
+HEROMOTOCO.NS,resistance,6100,6400,weekly,2024 ATH cluster weekly highs
+HEROMOTOCO.NS,resistance,5400,5600,weekly,2023-2024 weekly consolidation highs
+HEROMOTOCO.NS,support,4600,4700,weekly,current weekly demand base 2025-2026 lows
+HEROMOTOCO.NS,support,2200,2400,weekly,2022 weekly lows major structural demand
+HEROMOTOCO.NS,resistance,6000,6400,monthly,2024 ATH zone
+HEROMOTOCO.NS,support,4000,4200,monthly,2023 breakout base
+HEROMOTOCO.NS,support,2000,2400,monthly,pre-2024 multi-year base

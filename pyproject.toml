@@ -1,0 +1,9 @@
+# Tooling config only (pytest + ruff). The project ships as flat scripts +
+# root modules; this file is intentionally not a packaging manifest.
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
