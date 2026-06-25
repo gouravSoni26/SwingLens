@@ -100,7 +100,7 @@ def gov_row(label: str, status: str) -> str:
 
 
 # ── Report renderer ────────────────────────────────────────────────────────────
-def render_report(analysis: dict, obsidian_key: str, obsidian_host: str) -> None:
+def render_report(analysis: dict, obsidian_key: str, obsidian_host: str, context: str = "main") -> None:
     tk  = analysis.get("ticker", "")
     tf  = analysis.get("timeframes", {})
     rsk = analysis.get("risk", {})
@@ -190,12 +190,12 @@ def render_report(analysis: dict, obsidian_key: str, obsidian_host: str) -> None
     s1, s2 = st.columns(2)
 
     with s1:
-        if st.button("💾 Save to SQLite", use_container_width=True):
+        if st.button("💾 Save to SQLite", key=f"save_sqlite_{context}", use_container_width=True):
             row_id = save_to_sqlite(analysis)
             st.success(f"Saved — row ID {row_id}")
 
     with s2:
-        if st.button("📝 Save to Obsidian", use_container_width=True):
+        if st.button("📝 Save to Obsidian", key=f"save_obsidian_{context}", use_container_width=True):
             if not obsidian_key:
                 st.error("Add your Obsidian API key in the sidebar first.")
             else:
@@ -298,9 +298,9 @@ with tab_analyze:
             st.warning("⚡ Analysed via Groq (Llama 3.3 70B) — Claude unavailable or key not set.")
         elif provider == "claude":
             st.success("✓ Analysed via Claude Sonnet 4")
-        render_report(active, obsidian_key, obsidian_host)
+        render_report(active, obsidian_key, obsidian_host, context="analyze")
 
-    if st.button("🔄 Clear Analysis"):
+    if st.button("🔄 Clear Analysis", key="clear_analysis_main"):
         for k in ["last_analysis", "last_provider", "loaded_analysis",
                   "field_ticker", "field_monthly", "field_weekly",
                   "field_daily", "field_h1", "field_entry", "field_sl", "field_target"]:
@@ -345,7 +345,7 @@ with tab_history:
         # Show loaded analysis from history
         if st.session_state.get("loaded_analysis"):
             st.divider()
-            render_report(st.session_state.loaded_analysis, obsidian_key, obsidian_host)
+            render_report(st.session_state.loaded_analysis, obsidian_key, obsidian_host, context="history")
             if st.button("🔄 Clear Analysis", key="clear_history"):
                 st.session_state.pop("loaded_analysis", None)
                 st.rerun()
