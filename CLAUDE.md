@@ -61,7 +61,10 @@ nse-trading-analyst/
 │   └── app-development/
 │       └── SKILL.md                   ← How to build/modify this app
 ├── data/
-│   └── analyses.db                    ← SQLite database (auto-created, gitignore)
+│   └── analyses.db                    ← SQLite database, gitignored; synced via GitHub
+│                                         Releases (data-latest) — push: scripts/
+│                                         sync_db_to_release.py (brief.py tail); pull:
+│                                         db_sync.py ensure_db_present() (app startup)
 ├── .env                               ← API keys (never commit)
 ├── .env.example                       ← Template to commit
 ├── requirements.txt
@@ -75,6 +78,18 @@ nse-trading-analyst/
 - `app.py` — owns all UI. Calls analyzer and storage, renders results.
 - `skills/nse-setup-analysis/SKILL.md` — source of truth for analysis rules.
   Never hardcode analysis rules elsewhere — always load from this file.
+
+### Data sync (production DB)
+
+`data/analyses.db` is gitignored, not committed — it reaches the deployed app
+via a rolling GitHub Release (tag `data-latest`), not git history.
+
+- **Push:** `scripts/sync_db_to_release.py` uploads it as the last best-effort
+  step in `scripts/brief.py`'s tail run — not a separate scheduled job (see
+  that file's docstring for why).
+- **Pull:** `db_sync.py`'s `ensure_db_present()` fetches it on cold start,
+  called from `app.py` and every `pages/*.py` file. Degrades gracefully
+  (shows a warning, never crashes) if the fetch fails.
 
 ---
 
@@ -153,4 +168,7 @@ Before modifying app structure → read `skills/app-development/SKILL.md`
 - Add F&O, futures, or options support
 - Add automated order execution of any kind
 - Invent indicator logic — always mark [PENDING: methodology.md]
-- Commit `.env` or `data/analyses.db`
+- Commit `.env`
+- Commit `data/analyses.db` to git, or remove it from `.gitignore` — it's synced via
+  GitHub Releases, not git history. Do not re-add it to tracking without an explicit,
+  deliberate instruction.
