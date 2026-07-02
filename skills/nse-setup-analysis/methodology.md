@@ -1,9 +1,11 @@
 ---
 version: v1.0
 status: active
-last_updated: 2026-06-17
+last_updated: 2026-07-02
 known_gaps:
   - "Section 15.1 (sideways/range rules): awaiting future Saif sir training module — never fill from external sources"
+  - "Section 16.5 (MA-pair 2x rule): confirm from Saif sir whether §12.1's 'long >= 2x short' guideline is scoped only to trade-setup pairs, or whether the close pairs 98&100 / 198&200 are a distinct confirmation tool exempt from it"
+  - "Section 3.0 (pivot group size across timeframes): confirm whether the 15-20 candle group stays constant on all timeframes"
 ---
 
 # methodology.md — NSE Trading Analyst
@@ -37,6 +39,24 @@ known_gaps:
 ---
 
 ## 3. Trend Analysis — The LTRP Framework
+
+### 3.0 Pivot Identification
+
+A pivot point is an important (pivotal) swing high or swing low on the chart. Pivots are what the trend in §3.1 is built from, and are used to determine the overall trend of the market.
+
+**Criteria to mark pivots:**
+- Consider a group of 15–20 candlesticks.
+- Within that set, pick out the important swing high, and the important swing low.
+- Clash between two swing highs → choose the **higher** one. Clash between two swing lows → choose the **lower** one.
+
+**Zig-zag rule (alternation):**
+- Each pivot high is followed by a pivot low; each pivot low is followed by a pivot high.
+- Mark zig-zag lines across the chart and plot the pivots on them.
+- Never a pivot high after a pivot high, or a pivot low after a pivot low. **Remember ZIG-ZAG.**
+
+**Marking is visual human judgment.** "Important" has no numeric threshold — it is read by eye and learned with experience. The tool never auto-detects pivots; the human marks them. This is a hard governance line, the same class as trend direction (§3.1) — the tool may monitor levels once marked, but never proposes or detects the pivots themselves.
+
+`[PENDING: confirm from Saif sir]` — does the 15–20 candle group size stay constant across all timeframes (Monthly / Weekly / Daily / H1), or change per timeframe? Working assumption: same group size on every timeframe, the candles simply representing different durations.
 
 ### 3.1 What is a Trend?
 A series of consecutive pivot highs and pivot lows in a direction.
@@ -396,6 +416,70 @@ The training notes state: *"Incase security does not go down till 30, see where 
 7. **Never hardcode 30/70 as the only levels** — treat them as the starting reference, not the rule
 
 **Note:** RSI divergence signals (Section 12.2) still apply regardless of empirical level calibration — a divergence at any level is a warning worth noting.
+
+---
+
+## 16. Multi-Timeframe Indicator Screen
+
+*Display + governance layer for the SwingLens indicator screen. It surfaces the indicators already defined in §3, §4, §9, and §12 as computed facts across Daily / Weekly / Monthly. It computes and shows facts; it never states direction and never issues a buy/sell/size instruction. A lens you look through, never a voice you obey.*
+
+### 16.1 Governance — the screen's operating contract
+
+1. **Everything shown is a computed fact** — a number, or a plain yes/no a machine derives exactly. Nothing shown is an opinion.
+2. **The app never decides trend direction.** "Uptrend / downtrend" (higher highs / higher lows) stays the trader's visual judgment — the same class as pivot marking (§3.0).
+3. **The app never sums indicators into a verdict.** No "buy," no "bullish," no score, no confidence. The alignment strip may report *that* timeframes agree ("MACD crossed up on all three") — it never concludes what to do about it.
+4. **Highlighting points the eye; it does not judge.** A "lit up" reading draws attention. The trader reads the full row and decides.
+5. **Labels flow in, never back out as guidance.** The trader may record a review of any flagged squeeze (real vs noise; later, what happened). The app may show that record back and tally the trader's *own* accuracy — feeding the calibration tracker in `success-criteria.md`. It must **never** feed those labels back as a verdict on a *new* squeeze: no "resembles your winners," no similarity score, no ranking. Live-squeeze display depends **only** on current band width vs `SQUEEZE_LOOKBACK` — never on past labels.
+
+### 16.2 What each indicator shows, and when it lights up
+
+Definitions live in the cross-referenced sections; this table adds only the screen's display fact and its lit-up threshold.
+
+- **MACD** (§12.3) — *Shows:* line above / below signal. *Lights up:* line crosses signal (up or down) vs the previous trading day's snapshot.
+- **RSI (14)** (§12.2, §15.3) — *Shows:* the number. *Lights up:* `< RSI_LOW (30)` or `> RSI_HIGH (70)`. **30/70 is the *starting reference* per §12.2, not a hard rule** — empirical per-instrument calibration (the `rsi_calibrated` flag) is deferred; see §16.6.
+- **Bollinger — band touch** (§12.4) — *Shows:* on upper / on lower / middle. *Lights up:* close touches or crosses either band.
+- **Bollinger — squeeze** (§12.4, Play 3) — *Shows:* current band width, and "tightest in N." *Lights up:* current band width is the smallest in the last `SQUEEZE_LOOKBACK` periods for that timeframe. **N is an instinct-tuned dial (default ~20), not a taught number** — no rule predicts when or which way a squeeze breaks, so the flag reports "volatility is compressed," nothing more.
+- **Moving-average pair crossovers** (§12.1) — *Shows:* which SMA is above which, per pair. *Lights up:* the pair's ordering flips vs the previous snapshot. Pairs: **20&50, 50&100, 50&200, 98&100, 198&200**, each on Daily / Weekly / Monthly. The **98&100** and **198&200** close pairs are Saif-taught crossover pairs (learned via live examples) — see the reconciliation note in §16.5.
+- **Volume** (§9) — *Shows:* today ÷ 20-day average (e.g. 2.1x). *Lights up:* `>= VOL_NOTABLE (2.0x)`; strong flag at `>= VOL_STRONG (5.0x)`.
+- **Candle** — *Shows:* green / red. *Never lights up* — context only.
+- **S/R** (§4) — *Shows:* on support / on resistance / clear. *Lights up:* price within `SR_PROXIMITY` of a human-drawn level in `support_resistance`.
+
+> **Direction is never inferred from any of these.** A squeeze lights up as a *fact of low volatility*; the break's direction is the trader's read on the lower timeframe.
+
+### 16.3 Named constants (single source of truth)
+
+```
+RSI_LOW                  = 30
+RSI_HIGH                 = 70       # 30/70 = starting reference (§12.2), empirical calibration deferred
+VOL_NOTABLE              = 2.0      # x of 20-day average
+VOL_STRONG               = 5.0
+VOL_AVG_WINDOW           = 20       # days
+SR_PROXIMITY             = 0.05     # 5% — Saif-taught. Augments §4 (which gives no proximity value).
+                                    # NOTE: screen.py currently uses 2% — confirmed divergence, see §16.5.
+BB_PERIOD                = 20       # SMA, all timeframes (already in use)
+SQUEEZE_LOOKBACK_DAILY   = 20       # instinct dial — tuned by feel, not taught
+SQUEEZE_LOOKBACK_WEEKLY  = 20       # instinct dial
+SQUEEZE_LOOKBACK_MONTHLY = 20       # instinct dial
+BREACH_BASIS             = "close"  # wicks never count — restates the global rule in §1
+```
+
+**Store the number, derive the flag.** The database stores raw readings; "lit up" is computed in the view layer at render time. Tuning a threshold is a config edit, never a data migration.
+
+### 16.4 Provenance (how the facts are produced)
+
+- Computed by `analyze.py` (the 06:20 job) from `ohlcv_{daily,weekly,monthly}`. The squeeze "tightest in N" comparison uses prior periods *of the same timeframe* — a weekly squeeze compares prior weeks, never prior daily snapshots.
+- MACD and MA-pair crosses are **derived** by comparing consecutive snapshots — no stored "cross" columns.
+- `squeeze_reviews` is a journaling log only. Per §16.1 rule 5, its labels never influence how a live squeeze is displayed.
+
+### 16.5 Reconciliations to confirm (open — do not code around these)
+
+- **MA-pair 2× rule.** §12.1 states the long MA must be at least 2× the short MA, and rejects too-close pairs. The Saif-taught close pairs **98&100** and **198&200** do not meet that guideline. `[PENDING: confirm from Saif sir]` — is the 2× guideline scoped only to the "common" trade-setup pairs (5&20, 9&18, 13&36, 50&200), or are these close pairs a distinct confirmation tool exempt from it? Until confirmed, §12.1 and §16.2 both stand as written.
+- **S/R proximity value.** Methodology value is **5%** (Saif-taught). `screen.py` currently uses **2%** — a confirmed divergence to reconcile (its own task).
+
+### 16.6 Deferred to v2 (recorded so scope can't creep)
+
+- **RSI regime bands** (40/80 uptrend, 20/60 downtrend, per §12.2 / §15.3): needs a per-stock trend tag, which is trend judgment → deferred until Kite/Zerodha history is loaded. Home: the existing `rsi_calibrated` / `sma_pair_calibrated` flags; default 0 = plain 30/70 until then. Any such tag goes stale (DP-04) — tag few, re-check, never bulk-tag 500.
+- **Fibonacci (§11) and chart patterns (§8)** are *defined in this methodology* but **not surfaced on the v1 screen** — their screen integration (levels drawn on a mini-chart; pattern flags) is a v2 feature, not a pending method.
 
 ---
 
