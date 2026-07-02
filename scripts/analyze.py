@@ -66,13 +66,12 @@ MACD_SIGNAL = 9  # methodology §12.3
 BB_PERIOD = 20  # methodology §12.4
 BB_STD = 2.0  # methodology §12.4
 
-# SMA periods per timeframe (mirrors screen.py's named-constant pattern; long >=
-# 2x short per methodology §12.1). Monthly uses a single SMA (no 50/200).
-DAILY_SMA_SHORT = 50
-DAILY_SMA_LONG = 200
-WEEKLY_SMA_SHORT = 20
-WEEKLY_SMA_LONG = 50
-MONTHLY_SMA = 20
+# SMA periods computed on EVERY timeframe — covers all five taught pairs
+# (§12.1, §16.2): 20&50, 50&100, 50&200, 98&100, 198&200. Same period set on
+# Daily/Weekly/Monthly; the candles simply represent different durations.
+# Single source of truth — scripts/indicator_screen.py (the derivation layer)
+# reads analyze.SMA_PERIODS rather than redefining it.
+SMA_PERIODS = (20, 50, 98, 100, 198, 200)
 
 VOL_SMA_PERIOD = 20  # 20-day average volume — vol_ratio baseline
 
@@ -85,7 +84,11 @@ SNAPSHOT_COLUMNS = [
     "analysis_date",
     "latest_close",
     "latest_date",
+    "daily_sma20",
     "daily_sma50",
+    "daily_sma98",
+    "daily_sma100",
+    "daily_sma198",
     "daily_sma200",
     "daily_rsi14",
     "daily_macd",
@@ -96,6 +99,10 @@ SNAPSHOT_COLUMNS = [
     "daily_bb_lower",
     "weekly_sma20",
     "weekly_sma50",
+    "weekly_sma98",
+    "weekly_sma100",
+    "weekly_sma198",
+    "weekly_sma200",
     "weekly_rsi14",
     "weekly_macd",
     "weekly_macd_signal",
@@ -104,6 +111,11 @@ SNAPSHOT_COLUMNS = [
     "weekly_bb_mid",
     "weekly_bb_lower",
     "monthly_sma20",
+    "monthly_sma50",
+    "monthly_sma98",
+    "monthly_sma100",
+    "monthly_sma198",
+    "monthly_sma200",
     "monthly_rsi14",
     "monthly_macd",
     "monthly_macd_signal",
@@ -178,6 +190,16 @@ def bollinger(
     bb_upper = bb_mid + mult * std
     bb_lower = bb_mid - mult * std
     return _last(bb_upper), _last(bb_mid), _last(bb_lower)
+
+
+def sma_set(prefix: str, closes: pd.Series) -> dict[str, float | None]:
+    """Every SMA_PERIODS value for one timeframe, keyed like ``daily_sma50``.
+
+    Covers all five taught pairs (§12.1, §16.2) in one loop instead of a
+    hand-written call per period — SMA_PERIODS is the single source of truth
+    for which periods get computed and stored.
+    """
+    return {f"{prefix}_sma{period}": _round2(sma(closes, period)) for period in SMA_PERIODS}
 
 
 def volume_metrics(
@@ -277,8 +299,7 @@ def build_snapshot(conn: sqlite3.Connection, ticker: str, analysis_date: str) ->
         "latest_close": _round2(latest_close),
         "latest_date": latest_date,
         # Daily
-        "daily_sma50": _round2(sma(daily, DAILY_SMA_SHORT)),
-        "daily_sma200": _round2(sma(daily, DAILY_SMA_LONG)),
+        **sma_set("daily", daily),
         "daily_rsi14": _round2(rsi(daily)),
         "daily_macd": _round2(d_macd),
         "daily_macd_signal": _round2(d_sig),
@@ -287,8 +308,7 @@ def build_snapshot(conn: sqlite3.Connection, ticker: str, analysis_date: str) ->
         "daily_bb_mid": _round2(d_bm),
         "daily_bb_lower": _round2(d_bl),
         # Weekly
-        "weekly_sma20": _round2(sma(weekly, WEEKLY_SMA_SHORT)),
-        "weekly_sma50": _round2(sma(weekly, WEEKLY_SMA_LONG)),
+        **sma_set("weekly", weekly),
         "weekly_rsi14": _round2(rsi(weekly)),
         "weekly_macd": _round2(w_macd),
         "weekly_macd_signal": _round2(w_sig),
@@ -297,7 +317,7 @@ def build_snapshot(conn: sqlite3.Connection, ticker: str, analysis_date: str) ->
         "weekly_bb_mid": _round2(w_bm),
         "weekly_bb_lower": _round2(w_bl),
         # Monthly
-        "monthly_sma20": _round2(sma(monthly, MONTHLY_SMA)),
+        **sma_set("monthly", monthly),
         "monthly_rsi14": _round2(rsi(monthly)),
         "monthly_macd": _round2(m_macd),
         "monthly_macd_signal": _round2(m_sig),

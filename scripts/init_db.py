@@ -189,12 +189,49 @@ SCHEMA_STATEMENTS = [
     )
     """,
     "CREATE INDEX IF NOT EXISTS idx_sr_ticker_active ON support_resistance(ticker, is_active)",
+    # 10. squeeze_reviews — trader's own journal of past squeeze calls
+    # (methodology.md §16.1 rule 5 / §16.4). Labels here NEVER feed back into how
+    # a *new* squeeze is displayed — the live-squeeze render path reads only
+    # current band width vs SQUEEZE_LOOKBACK, never this table.
+    """
+    CREATE TABLE IF NOT EXISTS squeeze_reviews (
+        id          INTEGER PRIMARY KEY AUTOINCREMENT,
+        ticker      TEXT NOT NULL,
+        timeframe   TEXT NOT NULL,
+        review_date DATE NOT NULL,
+        verdict     TEXT,
+        note        TEXT,
+        outcome     TEXT,
+        created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        UNIQUE(ticker, timeframe, review_date)
+    )
+    """,
+    "CREATE INDEX IF NOT EXISTS idx_squeeze_reviews_ticker ON squeeze_reviews(ticker, timeframe)",
 ]
 
 # Idempotent column migrations for tables that may already exist (CREATE TABLE
 # IF NOT EXISTS will not alter an existing table). Each entry: (table, column, decl).
+# The 13 indicator_snapshots SMA entries below are paired with the same 13
+# columns in init_indicator_snapshots()'s CREATE TABLE — both must be edited
+# together so a fresh DB and a migrated DB end up with an identical schema.
 COLUMN_MIGRATIONS = [
     ("scan_log", "skipped_stale", "INTEGER NOT NULL DEFAULT 0"),
+    # Daily — completes pairs 20&50, 50&100, 50&200 (daily_sma50/200 exist), 98&100, 198&200
+    ("indicator_snapshots", "daily_sma20", "REAL"),
+    ("indicator_snapshots", "daily_sma98", "REAL"),
+    ("indicator_snapshots", "daily_sma100", "REAL"),
+    ("indicator_snapshots", "daily_sma198", "REAL"),
+    # Weekly — completes 50&100, 50&200, 98&100, 198&200 (weekly_sma20/50 exist)
+    ("indicator_snapshots", "weekly_sma98", "REAL"),
+    ("indicator_snapshots", "weekly_sma100", "REAL"),
+    ("indicator_snapshots", "weekly_sma198", "REAL"),
+    ("indicator_snapshots", "weekly_sma200", "REAL"),
+    # Monthly — completes 20&50, 50&100, 50&200, 98&100, 198&200 (monthly_sma20 exists)
+    ("indicator_snapshots", "monthly_sma50", "REAL"),
+    ("indicator_snapshots", "monthly_sma98", "REAL"),
+    ("indicator_snapshots", "monthly_sma100", "REAL"),
+    ("indicator_snapshots", "monthly_sma198", "REAL"),
+    ("indicator_snapshots", "monthly_sma200", "REAL"),
 ]
 
 
@@ -212,9 +249,12 @@ def init_db(db_path: Path) -> None:
         conn.execute("PRAGMA foreign_keys = ON")
         for statement in SCHEMA_STATEMENTS:
             conn.execute(statement)
+        # Must run before COLUMN_MIGRATIONS: some migration entries target
+        # indicator_snapshots, which this call creates (it isn't in
+        # SCHEMA_STATEMENTS). ALTER TABLE on a not-yet-created table errors.
+        init_indicator_snapshots(conn)
         for table, column, decl in COLUMN_MIGRATIONS:
             _ensure_column(conn, table, column, decl)
-        init_indicator_snapshots(conn)
         conn.commit()
         _print_summary(conn, db_path)
     finally:
@@ -280,6 +320,19 @@ def init_indicator_snapshots(conn: sqlite3.Connection) -> None:
             sma_pair_calibrated INTEGER DEFAULT 0,
             rsi_calibrated      INTEGER DEFAULT 0,
             created_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            daily_sma20         REAL,
+            daily_sma98         REAL,
+            daily_sma100        REAL,
+            daily_sma198        REAL,
+            weekly_sma98        REAL,
+            weekly_sma100       REAL,
+            weekly_sma198       REAL,
+            weekly_sma200       REAL,
+            monthly_sma50       REAL,
+            monthly_sma98       REAL,
+            monthly_sma100      REAL,
+            monthly_sma198      REAL,
+            monthly_sma200      REAL,
             UNIQUE(ticker, analysis_date)
         )
         """

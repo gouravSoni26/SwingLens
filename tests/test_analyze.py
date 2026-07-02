@@ -63,6 +63,23 @@ def test_bollinger_upper_gt_mid_gt_lower_for_non_flat_series():
     assert upper > mid > lower
 
 
+# ── 3c. sma_set — all SMA_PERIODS, one call per timeframe (§12.1, §16.2) ──────
+
+
+def test_sma_set_returns_every_period_keyed_by_prefix():
+    result = analyze.sma_set("daily", _wave(250))
+    expected_keys = {f"daily_sma{period}" for period in analyze.SMA_PERIODS}
+    assert set(result.keys()) == expected_keys
+
+
+def test_sma_set_none_when_insufficient_history():
+    # Only 30 rows: sma20 computable, sma50+ are not (insufficient history).
+    result = analyze.sma_set("daily", _wave(30))
+    assert result["daily_sma20"] is not None
+    assert result["daily_sma50"] is None
+    assert result["daily_sma200"] is None
+
+
 # ── 3b. Volume metrics ────────────────────────────────────────────────────────
 
 
@@ -150,6 +167,18 @@ def test_manual_mode_known_ticker_has_daily_rsi():
         conn.close()
     assert row["daily_rsi14"] is not None
     assert 0.0 <= row["daily_rsi14"] <= 100.0
+
+
+@pytest.mark.skipif(not REAL_DB.exists(), reason="populated data/analyses.db required")
+def test_manual_mode_known_ticker_has_all_new_sma_columns():
+    conn = analyze.open_readonly(REAL_DB)
+    try:
+        row = analyze.build_snapshot(conn, "RELIANCE.NS", date.today().isoformat())
+    finally:
+        conn.close()
+    for timeframe in ("daily", "weekly", "monthly"):
+        for period in analyze.SMA_PERIODS:
+            assert row[f"{timeframe}_sma{period}"] is not None
 
 
 # ── 5. Zero-candidate default mode exits cleanly ──────────────────────────────
