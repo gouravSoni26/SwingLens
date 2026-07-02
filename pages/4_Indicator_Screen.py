@@ -52,6 +52,12 @@ DB_PATH = REPO_ROOT / "data" / "analyses.db"
 sys.path.insert(0, str(REPO_ROOT / "scripts"))
 import indicator_screen as ix  # noqa: E402
 
+# db_sync.py lives at repo root — make it importable (Streamlit multipage does
+# NOT re-run app.py's top-level code on direct page navigation, so each page
+# needs its own cold-start DB fetch call).
+sys.path.insert(0, str(REPO_ROOT))
+from db_sync import ensure_db_present  # noqa: E402
+
 PAGE_TITLE = "NSE Indicator Screen"
 DISCLAIMER = "Research support only — computed facts for manual review, **not trade signals**."
 ROUND_DECIMALS = 2
@@ -471,6 +477,8 @@ def main() -> None:
     st.set_page_config(page_title=PAGE_TITLE, layout="wide")
     st.title(PAGE_TITLE)
     st.caption(DISCLAIMER)
+
+    ensure_db_present()  # cold-start only — no-op if data/analyses.db already exists
 
     if not DB_PATH.exists():
         st.error(f"Database not found at {DB_PATH}. Run scripts/init_db.py first.")

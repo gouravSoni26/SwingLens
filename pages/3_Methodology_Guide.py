@@ -17,6 +17,7 @@ Run the app from the repo root:
 """
 
 import re
+import sys
 from pathlib import Path
 from typing import NamedTuple
 
@@ -26,6 +27,13 @@ import streamlit as st
 # <repo>/pages/, so the repo root is two parents up (mirrors 2_Ticker_Analysis.py).
 REPO_ROOT = Path(__file__).resolve().parent.parent
 METHODOLOGY_PATH = REPO_ROOT / Path("skills/nse-setup-analysis/methodology.md")
+
+# db_sync.py lives at repo root — make it importable. This page doesn't read
+# data/analyses.db itself, but st.cache_resource de-dupes ensure_db_present()
+# across every page in the process, so calling it here too keeps the DB warm
+# even if this is the first page a cold-started user lands on.
+sys.path.insert(0, str(REPO_ROOT))
+from db_sync import ensure_db_present  # noqa: E402
 
 # When True, every tab except the free one shows an upgrade notice instead of
 # content. Default False — the full guide is available.
@@ -172,6 +180,8 @@ def main() -> None:
     st.set_page_config(page_title=PAGE_TITLE, layout="wide")
     st.title(PAGE_TITLE)
     st.info(GOVERNANCE_BANNER)
+
+    ensure_db_present()  # cold-start only — no-op if data/analyses.db already exists
 
     if not METHODOLOGY_PATH.exists():
         st.error(MISSING_FILE_ERROR)

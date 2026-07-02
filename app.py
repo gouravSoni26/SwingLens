@@ -7,11 +7,13 @@ Run with: streamlit run app.py
 
 import streamlit as st
 from analyzer import analyze_setup
+from db_sync import ensure_db_present
 from storage import init_db, save_to_sqlite, save_to_obsidian, get_history, get_by_id
 import os
 from dotenv import load_dotenv
 
 load_dotenv()
+ensure_db_present()  # fetch from the data-latest release if data/analyses.db is missing
 init_db()
 
 # ── Page config ────────────────────────────────────────────────────────────────

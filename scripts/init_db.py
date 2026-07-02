@@ -207,6 +207,20 @@ SCHEMA_STATEMENTS = [
     )
     """,
     "CREATE INDEX IF NOT EXISTS idx_squeeze_reviews_ticker ON squeeze_reviews(ticker, timeframe)",
+    # 11. db_sync_log — records every scripts/sync_db_to_release.py attempt
+    # (mirrors fetch_log/scan_log). Task Scheduler captures no stdout/stderr for
+    # these jobs and its own event log is disabled on this machine, so this is
+    # the only durable record of whether a DB release-sync succeeded.
+    """
+    CREATE TABLE IF NOT EXISTS db_sync_log (
+        id               INTEGER PRIMARY KEY AUTOINCREMENT,
+        run_at           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        status           TEXT NOT NULL,
+        message          TEXT,
+        db_size_bytes    INTEGER,
+        duration_seconds REAL
+    )
+    """,
 ]
 
 # Idempotent column migrations for tables that may already exist (CREATE TABLE

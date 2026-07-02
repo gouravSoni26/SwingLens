@@ -18,6 +18,7 @@ Run the app from the repo root:
 """
 
 import sqlite3
+import sys
 from pathlib import Path
 
 import pandas as pd
@@ -25,7 +26,14 @@ import streamlit as st
 
 # DB lives at <repo>/data/analyses.db regardless of CWD. This file sits in
 # <repo>/pages/, so the DB is two parents up (mirrors screen.py's resolution).
-DB_PATH = Path(__file__).resolve().parent.parent / "data" / "analyses.db"
+REPO_ROOT = Path(__file__).resolve().parent.parent
+DB_PATH = REPO_ROOT / "data" / "analyses.db"
+
+# db_sync.py lives at repo root — make it importable (Streamlit multipage does
+# NOT re-run app.py's top-level code on direct page navigation, so each page
+# needs its own cold-start DB fetch call).
+sys.path.insert(0, str(REPO_ROOT))
+from db_sync import ensure_db_present  # noqa: E402
 
 PAGE_TITLE = "NSE Daily Screener"
 DISCLAIMER = "Research support only — candidates for manual review, **not trade signals**."
@@ -153,6 +161,8 @@ def main() -> None:
     st.set_page_config(page_title=PAGE_TITLE, layout="wide")
     st.title(PAGE_TITLE)
     st.caption(DISCLAIMER)
+
+    ensure_db_present()  # cold-start only — no-op if data/analyses.db already exists
 
     if not DB_PATH.exists():
         st.error(f"Database not found at {DB_PATH}. Run scripts/init_db.py first.")

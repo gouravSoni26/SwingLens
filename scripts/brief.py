@@ -53,6 +53,10 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
+import sync_db_to_release  # sibling script — scripts/ is on sys.path for both
+# standalone execution (Task Scheduler) and test imports (tests/test_brief.py
+# inserts scripts/ before `import brief`).
+
 # Load .env so GROQ_API_KEY / OBSIDIAN_API_KEY (and OBSIDIAN_HOST) are available
 # when this script runs standalone, e.g. from Task Scheduler. Mirrors screen.py.
 load_dotenv()
@@ -73,6 +77,38 @@ MAX_BRIEF_TICKERS = 20
 
 OBSIDIAN_VAULT_FOLDER = "08-Daily-Logs"
 OBSIDIAN_HEADER = "Research support only. Not a trade signal. No buy/sell recommendation."
+
+# ── Macro/news context (source of truth: skills/macro-context-injector/SKILL.md) ─
+# Returned by fetch_news_context when the RSS fetch crashes or yields nothing.
+NO_FEED_FALLBACK = "(No feed data available)"
+
+# Short reminder of methodology for the prompt — not a full dump (skill: <=50 words).
+METHODOLOGY_SUMMARY = (
+    "Saif sir's swing methodology — multi-timeframe bias (Monthly/Weekly) with "
+    "Daily entry, RSI Wilder 14, MACD 12/26/9, Bollinger 20/2, volume "
+    "confirmation required, LONG_ONLY in the current phase."
+)
+
+# Canonical user-message structure: macro/news context FIRST, technical snapshot
+# SECOND, governance reminder included (skills/macro-context-injector/SKILL.md).
+# The forbidden-word *list* is enumerated only in the system prompt (so this
+# template stays clean under scan_forbidden); the MACD trigger line is labelled
+# "trigger" — never "signal" — for the same reason.
+BRIEF_PROMPT_TEMPLATE = (
+    "Research support only. Never produce trade ideas, predictions, or "
+    "confidence scores.\n"
+    "Methodology: {methodology_summary}\n\n"
+    "## Macro & News Context (last 24h)\n"
+    "{news_context}\n\n"
+    "## Technical Snapshot — {ticker}\n"
+    "{technical_block}\n"
+    "## Reminder\n"
+    'If the macro context above is "(No feed data available)" or '
+    '"No recent news available", omit any macro overlay and describe the '
+    "technical values only. Walk the timeframes Monthly, then Weekly, then "
+    "Daily, stating each value factually. Use neutral, descriptive prose with "
+    "no directional or recommendation language."
+)
 
 # Marker appended to any brief whose text contains forbidden directional language.
 GOVERNANCE_FLAG = "[GOVERNANCE FLAG]"
@@ -229,12 +265,8 @@ def _vc(value: object) -> str:
     return "N/A" if value is None else f"{value:,}"
 
 
-def build_user_message(snapshot: dict) -> str:
-    """Lay out the stored indicator values as a flat, factual block.
-
-    No interpretation here either — the user message is pure data so the model
-    has nothing to do but describe it.
-    """
+def _technical_block(snapshot: dict) -> str:
+    """The stored indicator values as a flat, factual block (no interpretation)."""
     s = snapshot
     return (
         f"Ticker: {s['ticker']}\n"
@@ -264,6 +296,46 @@ def build_user_message(snapshot: dict) -> str:
         f"  Volume ratio (today vs 20d avg): {_v(s['vol_ratio'])}  "
         f"({_vc(s['vol_daily'])} vs avg {_vc(s['vol_sma_20'])})\n"
     )
+
+
+def build_user_message(snapshot: dict, news_context: str = NO_FEED_FALLBACK) -> str:
+    """Render the full user message: macro/news context first, technical second.
+
+    Wraps the factual technical block in BRIEF_PROMPT_TEMPLATE (the canonical
+    structure from skills/macro-context-injector). ``news_context`` defaults to
+    the no-feed fallback so the message is well-formed even with no headlines.
+    The forbidden-word list is NOT enumerated here (only in the system prompt),
+    so this message stays clean under scan_forbidden.
+    """
+    return BRIEF_PROMPT_TEMPLATE.format(
+        methodology_summary=METHODOLOGY_SUMMARY,
+        news_context=news_context,
+        ticker=snapshot["ticker"],
+        technical_block=_technical_block(snapshot),
+    )
+
+
+# ── News context (best-effort; a feed problem must never crash the brief) ──────
+
+
+def fetch_news_context(ticker: str, sector: str | None = None) -> str:
+    """Sector-routed RSS headlines for ``ticker``. Never raises.
+
+    Routes the ticker to its sector feeds (sector_router) and pulls recent
+    headlines (fetch_feeds). Any failure — dead feed, network down, missing
+    dependency — is swallowed and NO_FEED_FALLBACK is returned, so a feed
+    problem can never abort the brief pipeline.
+    """
+    try:
+        from fetch_feeds import fetch_news_context as fetch_headlines
+        from sector_router import get_feeds_for_ticker
+
+        feed_urls = get_feeds_for_ticker(ticker)
+        text = fetch_headlines(feed_urls, ticker=ticker, max_items_per_feed=3, max_age_hours=24)
+        return text.strip() if text and text.strip() else NO_FEED_FALLBACK
+    except Exception as exc:  # noqa: BLE001 — feed problems never crash the brief
+        logger.warning("news fetch failed for %s (sector=%s): %s", ticker, sector, exc)
+        return NO_FEED_FALLBACK
 
 
 # ── Provider: Groq ─────────────────────────────────────────────────────────────
@@ -452,6 +524,15 @@ def save_to_obsidian(
 # ── Orchestration ──────────────────────────────────────────────────────────────
 
 
+def _sync_db(db_path: Path) -> None:
+    """Best-effort GitHub Releases DB sync — never raises, never affects
+    run()'s own exit code (see sync_db_to_release.py's module docstring for
+    why this replaced a 5th Task Scheduler job).
+    """
+    ok, message = sync_db_to_release.sync_db_to_release(db_path=db_path)
+    print(f"DB release sync {'ok' if ok else 'FAILED'} — {message}")
+
+
 def run(
     scan_date: str | None = None,
     ticker: str | None = None,
@@ -498,6 +579,9 @@ def run(
             tickers = select_brief_tickers(conn, scan_date)
             if not tickers:
                 print("0 candidates for today, exiting cleanly")
+                # Still sync: fetch_ohlcv/screen/analyze may have refreshed
+                # the DB this morning even with nothing to brief today.
+                _sync_db(db_path)
                 return 0
             print(f"Briefing {len(tickers)} candidate(s) for {scan_date}")
 
@@ -510,7 +594,8 @@ def run(
                     errors += 1
                     print(f"  {ticker:<16} ERROR: no indicator snapshot for {scan_date}")
                     continue
-                brief_text = call_groq(system_prompt, build_user_message(snapshot))
+                news_context = fetch_news_context(ticker)
+                brief_text = call_groq(system_prompt, build_user_message(snapshot, news_context))
                 final_text, found = apply_governance(brief_text)
                 row = build_brief_row(snapshot, final_text, found)
                 save_brief(conn, row)  # SQLite first — must succeed
@@ -536,6 +621,11 @@ def run(
                 print(f"Obsidian {status} — {message}")
                 if not ok:
                     print("NOTE: Obsidian write FAILED — briefs are safe in SQLite.")
+
+        # DB release sync: best-effort, mirrors the Obsidian block above. Never
+        # flips brief.py's own exit code — a sync hiccup shouldn't retroactively
+        # fail an otherwise-successful brief day (see sync_db_to_release.py).
+        _sync_db(db_path)
 
         if errors:
             print(f"\nCompleted with {errors} error(s).")
