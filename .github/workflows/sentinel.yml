@@ -1,0 +1,34 @@
+name: SwingLens Freshness Sentinel
+
+on:
+  schedule:
+    - cron: "30 3 * * *"   # 03:30 UTC == 09:00 IST, daily
+  workflow_dispatch: {}     # lets you run it by hand from the Actions tab (for testing)
+
+jobs:
+  check-freshness:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo (for the script)
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Resolve the analyses.db download URL from the release
+        id: asset
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          url=$(gh api repos/${{ github.repository }}/releases/tags/data-latest \
+                --jq '.assets[] | select(.name=="analyses.db") | .browser_download_url')
+          echo "db_url=$url" >> "$GITHUB_OUTPUT"
+
+      - name: Run the sentinel
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          DB_ASSET_URL: ${{ steps.asset.outputs.db_url }}
+        run: python check_freshness.py
