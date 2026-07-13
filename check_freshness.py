@@ -65,7 +65,8 @@ def main() -> int:
     expected = most_recent_expected_trading_day(now_ist).isoformat()
 
     # 3. Decide. String compare is safe because format is YYYY-MM-DD.
-    if newest is None or newest < expected:
+    #if newest is None or newest < expected:
+    if True:  # TEMP fire-drill: force the alert to test Telegram path
         msg = (
             "⚠️ SwingLens sentinel: cloud data looks STALE.\n"
             f"Newest analysis_date = {newest}\n"
