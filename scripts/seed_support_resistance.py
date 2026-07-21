@@ -57,7 +57,15 @@ def load_rows(csv_path: Path) -> list[tuple]:
         for line_no, record in enumerate(reader, start=2):  # row 1 is the header
             ticker = (record.get("ticker") or "").strip()
             kind = (record.get("kind") or "").strip().lower()
+            low_raw = (record.get("level_low") or "").strip()
             if not ticker:
+                continue
+            # Un-curated scaffold row from scripts/sr_coverage.py --todo: the
+            # ticker is pre-filled but no zone has been entered yet. Skip it so a
+            # partially-filled TODO file loads cleanly. A row carrying only ONE of
+            # kind/level_low is NOT a placeholder — it falls through and fails the
+            # validation below, catching a half-filled mistake loudly.
+            if not kind and not low_raw:
                 continue
             if kind not in VALID_KINDS:
                 raise ValueError(
@@ -72,7 +80,7 @@ def load_rows(csv_path: Path) -> list[tuple]:
                     f"{sorted(VALID_TIMEFRAMES)}, got {timeframe!r}"
                 )
 
-            level_low = _parse_float(record.get("level_low"), "level_low", line_no)
+            level_low = _parse_float(low_raw, "level_low", line_no)
             high_raw = (record.get("level_high") or "").strip()
             level_high = _parse_float(high_raw, "level_high", line_no) if high_raw else None
             note = (record.get("note") or "").strip() or None

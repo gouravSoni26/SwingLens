@@ -1,9 +1,19 @@
 #!/usr/bin/env python3
 """
-SwingLens cloud freshness sentinel (v1, weekdays-only).
+SwingLens cloud freshness sentinel (v2, weekdays-only).
 Runs on GitHub Actions. Downloads the pushed analyses.db from the
-data-latest release, checks whether the newest analysis_date matches
-the most recent expected trading day, and fires a Telegram alert if stale.
+data-latest release, checks whether the pipeline actually RAN for the
+most recent expected trading day, and fires a Telegram alert if stale.
+
+Liveness signal — why scan_log, not analyses:
+    v1 read MAX(analysis_date) FROM analyses. That table is only written by
+    brief.py, one row per *briefed candidate*. On a legitimate zero-candidate
+    day the whole pipeline runs perfectly yet inserts no analyses row, so v1
+    false-alarmed ("STALE") every day the screener found no setups.
+    scan_log gets exactly one row per screen.py run (screen.log_run, every run,
+    success or partial, candidates or not), so MAX(scan_date) there advances
+    whenever the pipeline runs and only goes stale when a run is genuinely
+    missed. That is the freshness question we actually want answered.
 """
 
 import os
@@ -56,20 +66,22 @@ def main() -> int:
     # 1. Download the pushed db from the release asset.
     urllib.request.urlretrieve(DB_URL, DB_LOCAL_PATH)
 
-    # 2. Read the newest analysis_date inside it.
+    # 2. Read the newest scan_date inside it. scan_log gets one row per screen
+    #    run regardless of candidate count, so it tracks whether the pipeline
+    #    RAN — unlike analyses, which only grows on candidate days (see module
+    #    docstring). None means the table is empty/absent -> treat as stale.
     conn = sqlite3.connect(DB_LOCAL_PATH)
-    row = conn.execute("SELECT MAX(analysis_date) FROM analyses").fetchone()
+    row = conn.execute("SELECT MAX(scan_date) FROM scan_log").fetchone()
     conn.close()
-    newest = row[0]  # e.g. "2026-07-13", or None if table empty
+    newest = row[0]  # e.g. "2026-07-21", or None if table empty
 
     expected = most_recent_expected_trading_day(now_ist).isoformat()
 
     # 3. Decide. String compare is safe because format is YYYY-MM-DD.
     if newest is None or newest < expected:
-    #if True:  # TEMP fire-drill: force the alert to test Telegram path
         msg = (
             "⚠️ SwingLens sentinel: cloud data looks STALE.\n"
-            f"Newest analysis_date = {newest}\n"
+            f"Newest scan_date = {newest}\n"
             f"Expected (>= last trading day) = {expected}\n"
             f"Checked at {now_ist.strftime('%Y-%m-%d %H:%M IST')}.\n"
             "The 6 AM pipeline may have missed a run or failed to push."
