@@ -1,0 +1,230 @@
+{
+  "_meta": {
+    "document": "system_features.json",
+    "purpose": "Granular, testable feature list with pass/fail status for all pause-period work. Living status document — reflects current build reality. No strategy features.",
+    "source": "PRD §6 capability areas, authored by Gourav, refined by AI.",
+    "prd_version": "v0.1 (2026-06-16)",
+    "last_updated": "2026-06-29",
+    "contract": "Every feature is one user-visible behaviour, testable end-to-end. 'passes: true' means verified working in production pipeline. 'passes: false' means not yet built or not yet verified.",
+    "scope_constraint": "NSE Indian equity cash market only. Swing trading only. No strategy features. No automated order execution. AI role is research support only — never generates trade signals, predictions, or confidence scores."
+  },
+
+  "capability_areas": {
+
+    "vault-infra": {
+      "description": "Obsidian vault structure, CLAUDE.md, governance documents, MCP connectivity, and the two-house architecture (code house D:\\nse-trading-analyst\\ + knowledge house D:\\obsidian-vaults\\trading-vault\\).",
+      "features": [
+        {
+          "id": "VI-01",
+          "name": "Vault folder structure exists and matches actual layout",
+          "behaviour": "All required top-level folders present in trading-vault: 00-Inbox, 01-Project, 02-Watchlists, 03-Sectors, 04-Stocks, 05-Trade-Journal, 05-Watchlist, 06-Research, 07-Learnings, 08-Daily-Logs, 99-Templates.",
+          "passes": true,
+          "note": "Original PRD spec named different folders (02-Research, 03-Setups, etc.) — vault was reorganised during build. This entry reflects actual structure as of 2026-06-29 audit."
+        },
+        {
+          "id": "VI-02",
+          "name": "CLAUDE.md is present and current",
+          "behaviour": "D:\\nse-trading-analyst\\CLAUDE.md exists, contains stable project facts, and is the source-of-truth for a new Claude Code session.",
+          "passes": true
+        },
+        {
+          "id": "VI-03",
+          "name": "Governance documents signed and in place",
+          "behaviour": "success-criteria.md and pause-period-setup-checklist.md exist in 01-Project/decisions/. methodology.md also lives in decisions/. Documents are not modified without explicit decision.",
+          "passes": true,
+          "note": "vault-templates-and-prompts.md is missing from the vault — not found anywhere as of 2026-06-29 audit. Original spec named it as one of three required docs. Removed from verified set until located or recreated. passes: true reflects the two confirmed docs + methodology.md."
+        },
+        {
+          "id": "VI-04",
+          "name": "Obsidian Local REST API reachable from code house",
+          "behaviour": "storage.py can write a note to 00-Inbox/ via the Local REST API without error when Obsidian is open.",
+          "passes": true
+        },
+        {
+          "id": "VI-05",
+          "name": "SQLite MCP registered in Claude Code",
+          "behaviour": "Claude Code can query analyses.db via the sqlite MCP server (registered via Bash tool, not PowerShell).",
+          "passes": true
+        },
+        {
+          "id": "VI-06",
+          "name": "context-handoff skill installed and triggering",
+          "behaviour": "At session end, the context-handoff skill generates a context-handoff.md artifact covering state, decisions, open items, and next session goal.",
+          "passes": true
+        }
+      ]
+    },
+
+    "data-pipeline": {
+      "description": "OHLCV ingestion from yfinance into SQLite, Task Scheduler automation, and the four-script daily pipeline.",
+      "features": [
+        {
+          "id": "DP-01",
+          "name": "SQLite schema initialised with all six tables",
+          "behaviour": "init_db.py creates instruments, ohlcv_daily, ohlcv_weekly, ohlcv_monthly, fetch_log, trades tables. Re-runnable idempotently.",
+          "passes": true
+        },
+        {
+          "id": "DP-02",
+          "name": "All 500 Nifty 500 tickers seeded",
+          "behaviour": "instruments table contains 500 active tickers from ind_nifty500list.csv. seed_instruments.py is idempotent.",
+          "passes": true
+        },
+        {
+          "id": "DP-03",
+          "name": "OHLCV fetch completes for full Nifty 500 universe",
+          "behaviour": "fetch_ohlcv.py fetches adjusted-close Daily/Weekly/Monthly OHLCV for all 500 tickers via yfinance in batches of 50 with resume-on-failure via fetch_log. 1500/1500 success verified.",
+          "passes": true
+        },
+        {
+          "id": "DP-04",
+          "name": "Task Scheduler runs all four pipeline scripts daily",
+          "behaviour": "Four jobs registered and status=Ready: NSE OHLCV Daily Fetch (06:00), NSE Scanner Daily Run (06:10), NSE Analyzer Daily Run (06:20), NSE Brief Daily Run (06:30). Jobs run unattended without a chat session.",
+          "passes": true,
+          "note": "Jobs confirmed registered and Ready as of 2026-06-29 audit. However, latest scan_results.scan_date is 2026-06-17 — 12 days stale. Jobs are registered but may not be firing. Investigate Task Scheduler last-run logs before treating pipeline as live."
+        },
+        {
+          "id": "DP-05",
+          "name": "S/R levels seeded for Nifty 50 tickers and beyond",
+          "behaviour": "support_resistance table has 371 human-curated rows across Daily (147) / Weekly (124) / Monthly (100) timeframes covering 62 distinct tickers. All Nifty 50 tickers are included; 12 additional tickers also present. Seeded via seed_support_resistance.py (INSERT OR IGNORE, idempotent).",
+          "passes": true
+        },
+        {
+          "id": "DP-06",
+          "name": "Streamlit Cloud reflects latest pipeline output",
+          "behaviour": "After each 6 AM pipeline run, analyst runs: git add data/analyses.db → git commit → git push. Cloud app at swinglens.streamlit.app shows same-day data.",
+          "passes": false,
+          "note": "Manual step required daily — Streamlit Cloud cannot run local pipeline. Not yet established as a habit."
+        }
+      ]
+    },
+
+    "telegram-capture": {
+      "description": "Telegram bot for phone-to-vault capture: voice notes (transcribed via Whisper), text notes, and trade observations land in 00-Inbox/ within 30 seconds.",
+      "features": [
+        {
+          "id": "TC-01",
+          "name": "Telegram bot responds to /start",
+          "behaviour": "Bot created via BotFather, token stored in .env, bot_runner.py starts without error and responds to /start with a confirmation message.",
+          "passes": true
+        },
+        {
+          "id": "TC-02",
+          "name": "Text message from phone lands in 00-Inbox/",
+          "behaviour": "Sending a text message to the bot results in a timestamped .md note in 00-Inbox/ within 30 seconds, written via Obsidian Local REST API.",
+          "passes": true
+        },
+        {
+          "id": "TC-03",
+          "name": "Voice note from phone is transcribed and lands in 00-Inbox/",
+          "behaviour": "Sending a voice note (OGG) to the bot triggers Groq whisper-large-v3-turbo transcription (hosted; reuses GROQ_API_KEY — no local model, torch, or ffmpeg); transcribed text lands in 00-Inbox/ as a timestamped .md note within 30 seconds.",
+          "passes": true
+        },
+        {
+          "id": "TC-04",
+          "name": "Bot runs as a persistent background process",
+          "behaviour": "bot_runner.py registered as a Windows Task Scheduler task (trigger: at startup). Survives machine reboot without manual restart.",
+          "passes": true
+        },
+        {
+          "id": "TC-05",
+          "name": "Bot is private — only Gourav's Telegram account accepted",
+          "behaviour": "Messages from any Telegram user ID other than Gourav's are silently ignored. Chat ID whitelist in .env.",
+          "passes": true
+        }
+      ]
+    },
+
+    "briefing-system": {
+      "description": "Daily research brief pipeline: screen.py → analyze.py → brief.py → Groq Llama 3.3 70B. Produces governance-compliant plain-English summaries with macro/sector news context. Never generates trade signals.",
+      "features": [
+        {
+          "id": "BS-01",
+          "name": "screen.py produces a candidate shortlist from S/R zones",
+          "behaviour": "screen.py runs over stored OHLCV and support_resistance table, applies S/R zone proximity rules (LONG_ONLY=True), writes candidates to scan_results table and a daily Obsidian note in 08-Daily-Logs/. Skips stale tickers via freshness guard.",
+          "passes": true
+        },
+        {
+          "id": "BS-02",
+          "name": "analyze.py computes all indicators for each candidate",
+          "behaviour": "For each scan_results candidate, analyze.py computes RSI (Wilder, ewm com=13), MACD 12/26/9, Bollinger Bands 20/2, volume ratio (vol_daily / vol_sma_20) — all hand-rolled in pandas. Writes to indicator_snapshots table and 05-Watchlist/{TICKER}.md.",
+          "passes": true
+        },
+        {
+          "id": "BS-03",
+          "name": "brief.py generates a governance-compliant Groq brief per ticker",
+          "behaviour": "brief.py calls Groq Llama 3.3 70B for up to MAX_BRIEF_TICKERS=20 tickers. Brief uses macro-context-first prompt structure. FORBIDDEN_WORDS governance check runs on output — any violation is flagged [GOVERNANCE FLAG], not suppressed. Stored in analyses table.",
+          "passes": true
+        },
+        {
+          "id": "BS-04",
+          "name": "brief.py supports --ticker manual mode",
+          "behaviour": "Running brief.py --ticker INFY.NS --date 2026-06-29 generates a brief for a single ticker on demand, using the same Groq + governance path as batch mode.",
+          "passes": true
+        },
+        {
+          "id": "BS-05",
+          "name": "News context injected into briefs from live RSS feeds",
+          "behaviour": "fetch_news_context(ticker, sector) fetches Livemint + BusinessLine RSS feeds, injects top headlines into the Groq prompt. Falls back gracefully to '(No feed data available)' on any failure — never crashes brief.py.",
+          "passes": true
+        },
+        {
+          "id": "BS-06",
+          "name": "Streamlit Daily Screener screen shows today's candidates",
+          "behaviour": "pages/1_Daily_Screener.py renders scan_results for today's date with ticker, zone, and proximity. Accessible at swinglens.streamlit.app.",
+          "passes": true
+        },
+        {
+          "id": "BS-07",
+          "name": "Streamlit Ticker Analysis screen shows indicators + brief on demand",
+          "behaviour": "pages/2_Ticker_Analysis.py renders indicator_snapshots (left column) and brief (right column) for any of the 500 instruments. Button-gated on-demand brief generation via subprocess to brief.py --ticker.",
+          "passes": true
+        },
+        {
+          "id": "BS-08",
+          "name": "Methodology Guide screen renders all 7 sections",
+          "behaviour": "pages/3_Methodology_Guide.py renders methodology.md with 7 fixed tabs via TAB_SPECS constant. PAYWALL_ENABLED=False stub in place for future SaaS gating.",
+          "passes": true
+        }
+      ]
+    },
+
+    "journaling": {
+      "description": "Trade journaling to Obsidian + SQLite: setup hypothesis, entry/exit, R:R, override type, hypothesized vs realized probability. Supports success-criteria logging requirements.",
+      "features": [
+        {
+          "id": "JN-01",
+          "name": "Obsidian daily log note created for each pipeline run",
+          "behaviour": "screen.py writes a daily note to 08-Daily-Logs/YYYY-MM-DD.md with scan summary, Needs Attention table, and Rule-by-Rule Breakdown for rejected tickers.",
+          "passes": true
+        },
+        {
+          "id": "JN-02",
+          "name": "Ticker analysis note written to 05-Watchlist/",
+          "behaviour": "analyze.py writes {TICKER}.md to 05-Watchlist/ with computed indicator values and multi-timeframe confluence summary for each candidate.",
+          "passes": true
+        },
+        {
+          "id": "JN-03",
+          "name": "Trade entry logged to SQLite trades table",
+          "behaviour": "When Gourav takes a paper trade, he can log it to the trades table with: ticker, entry_date, entry_price, stop_loss, target, setup_type, hypothesis, hypothesized_probability, r_r_ratio.",
+          "passes": false,
+          "note": "trades table schema exists (Phase 3). No UI or script for trade entry logging yet."
+        },
+        {
+          "id": "JN-04",
+          "name": "Trade exit logged with realized outcome",
+          "behaviour": "On trade close, exit_date, exit_price, realized_return, override_type (if applicable), and realized_probability are recorded. Enables success-criteria #6–#8 tracking.",
+          "passes": false
+        },
+        {
+          "id": "JN-05",
+          "name": "Weekly synthesis prompt produces a governance-compliant review",
+          "behaviour": "Claude Sonnet weekly synthesis covers: setups reviewed, trades taken, methodology adherence, overrides logged. Governance check: no section implies a directional prediction.",
+          "passes": false,
+          "note": "Prompt template exists in vault-templates-and-prompts.md. Not yet run in practice — no completed trades to review."
+        }
+      ]
+    }
+  }
+}

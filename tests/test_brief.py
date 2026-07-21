@@ -15,11 +15,26 @@ import sqlite3
 import sys
 from pathlib import Path
 
+import pytest
+
 # Make scripts/ importable.
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 
 import brief  # noqa: E402
 import init_db  # noqa: E402
+
+
+@pytest.fixture(autouse=True)
+def _no_network_feeds(monkeypatch):
+    """No network in unit tests — stub the RSS fetch (mirrors the Groq stub).
+
+    run() now calls brief.fetch_news_context per ticker; without this the
+    run()-based tests would hit live feeds. Returns the no-feed fallback so the
+    prompt path is exercised without any HTTP.
+    """
+    monkeypatch.setattr(
+        brief, "fetch_news_context", lambda ticker, sector=None: brief.NO_FEED_FALLBACK
+    )
 
 
 # ── 1. Governance scanner ─────────────────────────────────────────────────────
